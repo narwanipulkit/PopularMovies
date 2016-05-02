@@ -2,15 +2,12 @@ package pn3.popularmovies;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
