@@ -17,10 +17,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     GridView gv;
     String pref;
+    Boolean twoPane;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref = sharedPref.getString("sort", "1");
+
+        if(findViewById(R.id.detail_container)!=null)
+        {
+            twoPane=true;
+            if(savedInstanceState==null)
+            {
+
+                Bundle args=new Bundle();
+                args.putInt("position",0);
+                args.putInt("pref", Integer.parseInt(pref));
+                DetailFragment fragment=new DetailFragment();
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.detail_container,fragment).commit();
+            }
+
+
+        }
+        else
+        {
+            twoPane=false;
+        }
         ProgressBar progress=(ProgressBar)findViewById(R.id.pb);
 
 
@@ -38,11 +64,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         gv=(GridView)findViewById(R.id.gridView);
 
         gv.setAdapter(new ImageAdapter(this, getBaseContext()));
-        gv.setVerticalSpacing(20);
+
         gv.setOnItemClickListener(this);
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        pref = sharedPref.getString("sort", "");
+
 
 
 
@@ -78,11 +103,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Intent i=new Intent(getBaseContext(),MovieDetail.class);
-        i.putExtra("position",position);
-        i.putExtra("pref",Integer.parseInt(pref));
-        startActivity(i);
+        if(twoPane)
+        {
+            Bundle args=new Bundle();
+            args.putInt("position",position);
+            args.putInt("pref", Integer.parseInt(pref));
+            DetailFragment fragment=new DetailFragment();
+            fragment.setArguments(args);
 
+            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container,fragment).commit();
+
+        }
+        else {
+
+            Intent i = new Intent(getBaseContext(), MovieDetail.class);
+            i.putExtra("position", position);
+            i.putExtra("pref", Integer.parseInt(pref));
+            startActivity(i);
+        }
     }
 
     @Override

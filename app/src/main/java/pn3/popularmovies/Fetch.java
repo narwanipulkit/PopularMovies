@@ -81,7 +81,7 @@ public class Fetch extends AsyncTask<Context,String,String>{
             //Get Available Sizes
             size=output_part.get("logo_sizes").toString();
             sizes=size.substring(1, (size.length() - 1)).split(",");
-            out=base_url+sizes[3].substring(1,sizes[3].length()-1);
+            out=base_url+sizes[5].substring(1,sizes[5].length()-1);
             out2=base_url+sizes[5].substring(1, sizes[5].length() - 1);
 
 
@@ -147,6 +147,7 @@ public class Fetch extends AsyncTask<Context,String,String>{
                 editor.putString("title" + String.valueOf(i), temp.get("title").toString());
                 editor.putString("rating" + String.valueOf(i), temp.get("vote_average").toString());
                 editor.putString("release" + String.valueOf(i), temp.get("release_date").toString());
+                editor.putString("id"+String.valueOf(i),temp.get("id").toString());
 
             }
             editor.apply();
@@ -194,6 +195,7 @@ public class Fetch extends AsyncTask<Context,String,String>{
                 editor.putString("title" + String.valueOf(i), temp.get("title").toString());
                 editor.putString("rating" + String.valueOf(i), temp.get("vote_average").toString());
                 editor.putString("release" + String.valueOf(i), temp.get("release_date").toString());
+                editor.putString("id"+String.valueOf(i),temp.get("id").toString());
 
             }
             editor.apply();

@@ -4,58 +4,54 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class MovieDetail extends AppCompatActivity {
 
     int position;
     int pref;
+    RecyclerView recyclerView;
+    private final String api_key = "";//API KEY HERE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act);
-        Bundle b=getIntent().getExtras();
-        position=b.getInt("position");
-        pref=b.getInt("pref");
 
-        TextView titleView=(TextView)findViewById(R.id.mov_title);
-        TextView overv=(TextView)findViewById(R.id.overview);
-        TextView tv1=(TextView)findViewById(R.id.textView);
-        TextView tv2=(TextView)findViewById(R.id.textView3);
-        ImageView iv =(ImageView)findViewById(R.id.imageView);
+        Bundle b = getIntent().getExtras();
+        position = b.getInt("position");
+        pref = b.getInt("pref");
 
-        SharedPreferences s;
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        args.putInt("pref", pref);
 
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(args);
 
-        if(pref==1)
-        {s=getSharedPreferences("movie_det_popular", Context.MODE_PRIVATE);}
-        else
-        {
-            s=getSharedPreferences("movie_det_top", Context.MODE_PRIVATE);
-        }
-        String title = s.getString("title" + String.valueOf(position), "");
-        String overview=s.getString("overview"+String.valueOf(position),"");
-        String img=s.getString("img"+String.valueOf(position),"");
-        String rating=s.getString("rating"+String.valueOf(position),"-");
-        String release=s.getString("release"+String.valueOf(position),"-");
-        titleView.setText(title);
-        overv.setText(overview);
-        tv1.setText(rating);
-        tv2.setText(release);
-
-        if(img!="") {
-            Picasso.with(this).load(img).into(iv);
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
-        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.details, fragment).commit();
 
 
     }
